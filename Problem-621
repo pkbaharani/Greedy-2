@@ -1,0 +1,89 @@
+/*
+Leetcode Unsuccessful.
+Time Complexity:
+
+Approach:
+
+Tried to come up with an approach such that, I would have something like round robin
+but did not work.
+
+
+*/
+
+class Solution {
+    public int leastInterval(char[] tasks, int n) {
+        
+        HashMap<Character,Integer> hm = new HashMap<>();
+        List<Character> ls = new ArrayList<>();
+        int count=0;
+        for(int i=0;i<tasks.length;i++)
+        {
+            if(hm.containsKey(tasks[i]))
+                hm.put(tasks[i],hm.get(tasks[i])+1);
+            else
+            {
+                hm.put(tasks[i],1);
+                count++;
+                ls.add(tasks[i]);
+            }
+        }
+        
+        /*
+        for (Map.Entry<String,String> entry : gfg.entrySet())  
+            System.out.println("Key = " + entry.getKey() + 
+                             ", Value = " + entry.getValue()); 
+      
+        */
+    boolean flag=false;
+    int taskcount=0;
+    int idlecount=0;
+    int lastcount=0;
+    while(!flag)
+    {
+        for(Map.Entry<Character,Integer> entry : hm.entrySet())
+           {
+
+                int temp = entry.getValue();
+            
+                if(temp!=0)
+                {
+                    hm.put(entry.getKey(),temp-1);
+        //          entry.setValue(temp-1);
+                    taskcount++;
+                    if(taskcount==tasks.length)
+                    {
+                        flag=true;
+                        break;
+                    }
+                }
+            else{
+                idlecount++;
+            }
+           }
+        if(flag==true)
+        {
+            break;
+        }
+        System.out.println(hm);
+        System.out.println(idlecount);
+        int diffcount=taskcount-lastcount;
+        System.out.println(diffcount);
+        if(diffcount<=n)
+        {
+            idlecount+=n-diffcount+1;
+        }
+        lastcount=taskcount;
+        
+    }
+
+        //n < size
+        // return 0;
+        //n >=size
+        // total tasks / size+ n-size
+        
+        
+        
+        
+       return idlecount+tasks.length; 
+    }
+}
