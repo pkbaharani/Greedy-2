@@ -1,0 +1,58 @@
+/*
+Time Complexity: O(n)
+Space Complexity: O(n)
+Leetcode: Successful
+
+Approach:
+
+while iterating the ratings array once, who ever was at local maxima, got their candy count incremented.
+
+However, since here, changes in future could affect the past choice i.e giving number f candies to a child who has been visited already.
+iterate the ratings array again, this time in reverse direction.
+This is to ensure, what was future in last iteration is now past.
+Therefore, any change that a future child wanted to make on past child but could not in first iteration. would be possible if we iterate the ratings array again in reverse direction find maxima, assign candy values.
+*/
+
+class Solution {
+    public int candy(int[] ratings) {
+        
+        int n=ratings.length;
+        int [] cand = new int [n];
+        cand[0]=1;
+        for(int i=1;i<ratings.length;i++)
+        {
+            cand[i]=1;
+            if(ratings[i]>ratings[i-1]&&cand[i]<=cand[i-1])
+            {
+                cand[i]=cand[i-1]+1;
+            }
+            
+            if(ratings[i]<ratings[i-1]&&cand[i-1]<=cand[i])
+            {
+                cand[i-1]=cand[i]+1;
+            }
+                
+        }
+        
+        for(int i=ratings.length-2;i>=0;i--)
+        {
+         //   cand[i]=1;
+            if(ratings[i]>ratings[i+1]&&cand[i]<=cand[i+1])
+            {
+                cand[i]=cand[i+1]+1;
+            }
+            
+            if(ratings[i]<ratings[i+1]&&cand[i+1]<=cand[i])
+            {
+                cand[i+1]=cand[i]+1;
+            }
+                
+        }
+        int count=0;
+        for(int i=0;i<ratings.length;i++)
+            count+=cand[i];
+        
+        
+        return count;
+    }
+}
